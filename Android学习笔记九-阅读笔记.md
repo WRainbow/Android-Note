@@ -163,6 +163,8 @@ Messenger对AIDL做了封装，可以更加便捷地进行进程间通信。同�
 3. 如果服务端需要回应客户端，则像服务端一样再创建一个Handler并创建一个新的Messenger，并把这个Messenger对象通过Message的
 replyTo参数传递给服务端，服务端通过这个replyTo参数就可以回应客户端
 
+###### 服务端接受客户端消息
+MyContants.MSG_FROM_CLIENT、MyContants.MSG_FROM_SERVICE为常数  
 ***服务端代码：***
 
 ![MessengerService](E:\Study Document\Android开发艺术探索\阅读截图\MessengerService.png)
@@ -171,4 +173,25 @@ replyTo参数传递给服务端，服务端通过这个replyTo参数就可以回
 
 ![MessengerClient](E:\Study Document\Android开发艺术探索\阅读截图\MessengerClient.png)
 
-如果需要客户端接收
+###### 如果需要客户端接收服务端回复消息
+
+服务端代码需要在收到客户端消息后添加如下代码：  
+*msg为客户端消息*
+
+    Messenger client = msg.replyTo;
+    Message replyMessage = Message.obtain(null, 2);
+    Bundle bundle = new Bundle();
+    bundle.putString("reply", "收到并给了你一个回复");
+    replyMessage.setData(bundle);
+    try{
+      client.send(replyMessage);
+    }catch(RemoteException e){
+      e.printStackTrace();
+    }
+为了收到服务端的消息，客户端也需要准备一个接收消息的Messenger和Handler
+
+![MessengerClient](E:\Study Document\Android开发艺术探索\阅读截图\GetMessengerFromService.png)
+
+并在发送消息时`msg.setData(data);`后面添加
+`msg.replyTo = mGetReplyMessenger`
+#### 使用AIDL
