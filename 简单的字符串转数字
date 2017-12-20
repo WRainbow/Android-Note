@@ -1,0 +1,50 @@
+public float string2Float(String text)
+	{
+		//先补全数字
+		if (text.startsWith("."))
+		{
+			text = "0" + text;
+		}
+		if (text.endsWith("."))
+		{
+			text = text + "0";
+		}
+		//。（小数点）在作为分割符时，在正则中表示匹配任意字符，使用split方法需要加上转义
+		//如果包含多于1个小数点则不是可转化的字符串
+		if (text.split("\\.").length > 2)
+		{
+			return 0;
+		}
+		//小数字符串
+		if (text.contains("."))
+		{
+			StringBuilder sInteger = new StringBuilder(text.split("\\.")[0]);
+			StringBuilder sDecimal = new StringBuilder(text.split("\\.")[1]);
+			//去除整数部分的前置0和小数部分的后置0
+			sInteger = removePre0s(sInteger);
+			sDecimal = removeAft0s(sDecimal);
+			return Float.parseFloat(sInteger + "." + sDecimal);
+		} else {
+			return Float.parseFloat(text);
+		}
+	}
+	
+	//去除前置0
+	private StringBuilder removePre0s(StringBuilder sb)
+	{
+		while (sb.length() > 0 && '0' == sb.charAt(0))
+		{
+			sb.deleteCharAt(0);
+		}
+		return sb;
+	}
+	
+	//去除后置0
+	private StringBuilder removeAft0s(StringBuilder sb)
+	{
+		while (sb.length() > 0 && '0' == sb.charAt(sb.length() - 1))
+		{
+			sb.deleteCharAt(sb.length() - 1);
+		}
+		return sb;
+	}
