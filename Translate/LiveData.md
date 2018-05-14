@@ -340,7 +340,7 @@ class MyViewModel extends ViewModel {
 
 该机制允许较低级别的应用程序创建基于需求的延迟计算的`LiveData`对象。`ViewModel`对象可以很容易地获得对`LiveData`对象的引用，然后在它们之上定义转换规则。
 
-**创建新的转换**
+**创建新的转换（自定义转换）**
 
 有很多不同的特定转换可能在你的APP中有用，但它们不是默认提供的。要实现您自己的转换，您可以使用`MediatorLiveData`类，该类监听其他`LiveData`对象并处理由它们发出的事件。`MediatorLiveData`正确地将其状态传播到源`LiveData`对象。要了解更多关于此模式的信息，请参阅[转换](https://developer.android.google.cn/reference/android/arch/lifecycle/Transformations.html)类的参考文档。
 
